@@ -1,0 +1,5 @@
+As far as I understand, containers do not innately have access to many things 
+on the host machine, but can be granted access to with ports, sockets and the like. 
+This was done in the task, as I think it's not possible without using some kind of tool.
+I researched a little bit that the containers do share the kernel of the host machine, but 
+are still isolated.

@@ -1,0 +1,15 @@
+Docker container ls:
+
+mehis@mehis-IdeaPad-5-Pro-14ACN6:~/Programming/DevOpscourse$ docker container ls
+CONTAINER ID   IMAGE                   COMMAND                  CREATED          STATUS          PORTS                                         NAMES
+1af8105f2cf5   devopscourse-service1   "docker-entrypoint.s…"   2 minutes ago    Up 16 seconds   0.0.0.0:8199->8199/tcp, :::8199->8199/tcp     devopscourse-service1-1
+5b1aa8ad0492   devopscourse-service2   "python service2.py"     47 minutes ago   Up 16 seconds   0.0.0.0:32778->8200/tcp, :::32778->8200/tcp   devopscourse-service2-1
+
+Docker network ls:
+
+mehis@mehis-IdeaPad-5-Pro-14ACN6:~/Programming/DevOpscourse$ docker network ls
+NETWORK ID     NAME                   DRIVER    SCOPE
+65ffdbc09998   bridge                 bridge    local
+683a0441e330   devopscourse_default   bridge    local
+904c286caae2   host                   host      local
+5d7e707e195f   none                   null      local

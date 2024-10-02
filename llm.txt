@@ -1,0 +1,12 @@
+For this task, I utilized Copilot as assistance in some parts to help me get pointed
+in the right direction if I got really stuck on something (this happened), and for
+some very weird formatting tricks for the process commands. The motivation was to
+save time in writing tricky solutions for formatting. Those kinds of manual tasks can fill up a lot of time,
+which I believe is not the learning goal for these kinds of exercises. I did however,
+manually comment the code, and work to understand it. Llm tools would often be useful for commenting,
+but I didn't use it here for that.
+A downside for llm is that the solutions are often, and in this case quite
+bad. There must be a lot better of a way to format the outputs of the ps command and such cases
+Also, some of the answers often clash with other parts of the code, which can cause trouble,
+like using two tools instead of using one tool's methods to work out the situation,
+or so on.
