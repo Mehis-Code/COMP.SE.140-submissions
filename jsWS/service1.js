@@ -1,22 +1,30 @@
 const http = require('http');
 const { execSync } = require('child_process');
+const fs = require('fs');
 
 const server = http.createServer((req, res) => {
     if (req.method === 'GET') {
         try {
             //Useful node library for this task
             const IP = execSync('hostname -i').toString().trim();
-            const processInfo = execSync('ps -ax').toString().split('\n');
+            //Help from copilot with this one. I had trouble with refactoring to node-alpine
+            //because ps -ax does not work on that version
+            const processInfo = execSync('ps -o pid,tty,stat,time,args').toString().split('\n');
             const diskSpaceInfo = execSync('df -h').toString().split('\n');
-            const howLongUp = execSync('uptime -p').toString().trim();
+
+            // Read uptime from /proc/uptime
+            const uptimeSeconds = fs.readFileSync('/proc/uptime', 'utf8').split(' ')[0];
+            const uptimeString = `${Math.floor(uptimeSeconds / 3600)} hours, ${Math.floor((uptimeSeconds % 3600) / 60)} minutes`;
+
+
             const processes = {};
             //A very janky match, I struggled to format the ps-command output, 
             //got help from copilot
             processInfo.slice(1).forEach(line => {
                 const columns = line.trim().match(/^(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(.+)$/);
                 if (columns) {
-                    const [_, pid, tty, stat, time, cmd] = columns;
-                    processes[pid] = { TTY: tty, STAT: stat, TIME: time, CMD: cmd };
+                    const [_, pid, tty, stat, time, args] = columns;
+                    processes[pid] = { TTY: tty, STAT: stat, TIME: time, CMD: args };
                 }
             });
             //Formatting for S1 data
@@ -25,7 +33,7 @@ const server = http.createServer((req, res) => {
                     "IP address": IP,
                     "List of processes running": processes,
                     "Disk space available": diskSpaceInfo,
-                    "Time since last booted": howLongUp
+                    "Time since last booted": uptimeString
                 }
             };
             //Directions for get request
