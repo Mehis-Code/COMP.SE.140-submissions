@@ -27,7 +27,7 @@ class Server(BaseHTTPRequestHandler):
                     cmd = columns[3] + " " + columns[4]
                     processes[pid] = { "TTY": tty, "TIME": time, "CMD": cmd }
 
-        # Reading time, found snipped online
+        # Reading time since booted, found snipped online
         with open('/proc/uptime', 'r') as f:
             uptime_seconds = float(f.readline().split()[0])
             uptime_string = f"{int(uptime_seconds // 3600)} hours, {int((uptime_seconds % 3600) // 60)} minutes"
