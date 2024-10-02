@@ -1,0 +1,10 @@
+FROM python:3.9-alpine
+
+
+WORKDIR /usr/src/app
+
+COPY . .
+
+EXPOSE 8200
+
+CMD ["python", "service2.py"]

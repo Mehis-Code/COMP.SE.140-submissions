@@ -1,0 +1,17 @@
+
+services:
+  service2:
+    build:
+      context: ./pythonWS
+      dockerfile: Dockerfile.service2
+    ports:
+      - "8200"
+  service1:
+    build:
+      context: ./jsWS
+      dockerfile: Dockerfile.service1
+    ports:
+      - "8199:8199"
+    depends_on:
+      - service2
+
