@@ -32,6 +32,14 @@ services:
       - service1
       - service2
 
+  shutdown:
+    build:
+      context: ./shutdown
+      dockerfile: Dockerfile.shutdown
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - loadbalancing
 
 networks:
   loadbalancing:
