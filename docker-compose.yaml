@@ -1,17 +1,36 @@
 
 services:
-  service2:
-    build:
-      context: ./pythonWS
-      dockerfile: Dockerfile.service2
-    ports:
-      - "8200"
   service1:
     build:
       context: ./jsWS
       dockerfile: Dockerfile.service1
-    ports:
-      - "8199:8199"
     depends_on:
       - service2
+    environment:
+      - PORT=8199
+    deploy:
+      replicas: 3
+    networks:
+      - loadbalancing
 
+  service2:
+    build:
+      context: ./pythonWS
+      dockerfile: Dockerfile.service2
+    environment:
+      - PORT=8200
+    networks:
+      - loadbalancing
+
+  nginx:
+    build: ./nginx
+    ports:
+      - "8081:8081"
+    networks:
+      - loadbalancing
+    depends_on:
+      - service1
+      - service2
+
+networks:
+  loadbalancing:

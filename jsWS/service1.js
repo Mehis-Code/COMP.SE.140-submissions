@@ -53,8 +53,13 @@ const server = http.createServer((req, res) => {
                     let service2Data = JSON.parse(data);
                     //Appending S2data to responseData
                     responseData["Service2 Data"] = service2Data;
-                    res.writeHead(200, { 'Content-Type': 'application/json' });
-                    res.end(JSON.stringify(responseData, null, 4));
+
+                    //Setting timeout according to exercise 4 directions
+                    setTimeout(() => {
+                        console.log("Service timeout 2s")
+                        res.writeHead(200, { 'Content-Type': 'application/json' });
+                        res.end(JSON.stringify(responseData, null, 4));
+                    }, 2000);
                 });
             });
             //Error handling for the get request
