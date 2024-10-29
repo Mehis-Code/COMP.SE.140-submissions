@@ -1,17 +1,27 @@
+import docker
 from flask import Flask, request
 import os
-import subprocess
+import threading
 
 app = Flask(__name__)
 
+#genius solution from online
+#my initial idea was to try to use docker compose down as a script, but i could not make it work
 @app.route('/shutdown', methods=['POST'])
 def shutdown():
-    # Verify if the request has a valid token or comes from a trusted source (optional)
-    if request.method == 'POST':
-        # Trigger Docker Compose down command to stop containers
-        subprocess.call(['docker-compose', 'down'])
-        return "Shutdown signal received. Shutting down containers.", 200
-    return "Invalid request", 400
+    client = docker.from_env()
+    containerList = client.containerList.list()
+    for container in containerList:
+        if 'shutdown' not in container.name:
+            container.kill()
+
+    def shut():
+        import time
+        time.sleep(1)  
+        os._exit(0)
+    threading.Thread(target=shut).start()
+    return 'System shutdown in progress'
 
 if __name__ == '__main__':
+    print("Flask server starting..")
     app.run(host='0.0.0.0', port=5000)

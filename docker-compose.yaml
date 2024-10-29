@@ -34,8 +34,10 @@ services:
 
   shutdown:
     build:
-      context: ./shutdown
-      dockerfile: Dockerfile.shutdown
+      context: .  
+      dockerfile: shutdown/Dockerfile.shutdown
+    environment:
+      - PORT=5000
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:

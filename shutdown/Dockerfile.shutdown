@@ -1,10 +1,10 @@
-FROM python:3.8-slim
+FROM python:3.9-alpine
 
-WORKDIR /app
-COPY shutdown_server.py /app
-COPY ../docker-compose.yaml /app
+WORKDIR /usr/src/app
+COPY shutdown/shutdown_server.py .
+COPY docker-compose.yaml .
 
-RUN pip install flask
+RUN pip install flask docker
 
 EXPOSE 5000
 
