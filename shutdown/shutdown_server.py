@@ -10,8 +10,8 @@ app = Flask(__name__)
 @app.route('/shutdown', methods=['POST'])
 def shutdown():
     client = docker.from_env()
-    containerList = client.containerList.list()
-    for container in containerList:
+    containers = client.containers.list()
+    for container in containers:
         if 'shutdown' not in container.name:
             container.kill()
 

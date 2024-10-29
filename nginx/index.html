@@ -3,23 +3,28 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Exercise4 - NGINX</title>
+    <title>Exercise 4 - NGINX</title>
     <script>
-        function sendReq() {
-            fetch('/service1');
+        function sendRequest() {
+            fetch('/service1')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('response').value = JSON.stringify(data, null, 2);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
         }
 
         function stopSystem() {
-            fetch('/shutdown', {
-                method: 'POST'
-            });
+            fetch('/shutdown', { method: 'POST' });
         }
     </script>
 </head>
 
 <body>
-    <h1>Exercise4 - NGINX</h1>
-    <button onclick="sendReq()">REQUEST</button>
+    <h1>Exercise 4 - NGINX</h1>
+    <button onclick="sendRequest()">REQUEST</button>
     <button onclick="stopSystem()">STOP</button>
     <br><br>
     <textarea id="response" rows="20" cols="80"></textarea>

@@ -9,7 +9,13 @@
 <body>
     <h1>401 Unauthorized</h1>
     <p>Wrong password or username</p>
-    <a href="/">Retry</a>
+    <p>Please try again :)</p>
+    <a href="/" onclick="retryLogin()">Retry</a>
+    <script>
+        function retryLogin() {
+            window.location.href = '/';
+        }
+    </script>
 </body>
 
 </html>
