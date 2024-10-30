@@ -1,15 +1,15 @@
-Docker container ls:
+mehis@mehis-IdeaPad-5-Pro-14ACN6:~/Programming/DevOpscourse/4th$ docker container ls
+CONTAINER ID   IMAGE          COMMAND                  CREATED          STATUS              PORTS                                               NAMES
+132ba7997179   4th-nginx      "/docker-entrypoint.…"   11 minutes ago   Up About a minute   80/tcp, 0.0.0.0:8198->8198/tcp, :::8198->8198/tcp   4th-nginx-1
+6e3d95634fa0   4th-service1   "docker-entrypoint.s…"   11 minutes ago   Up About a minute   8199/tcp                                            4th-service1-3
+300bb8e878ab   4th-service1   "docker-entrypoint.s…"   11 minutes ago   Up About a minute   8199/tcp                                            4th-service1-2
+cc6c35c4bfcf   4th-service1   "docker-entrypoint.s…"   11 minutes ago   Up About a minute   8199/tcp                                            4th-service1-1
+58ac95c760d2   4th-shutdown   "python shutdown_ser…"   11 minutes ago   Up About a minute   5000/tcp                                            4th-shutdown-1
+adfe78013b76   4th-service2   "python service2.py"     11 minutes ago   Up About a minute   8200/tcp                                            4th-service2-1
 
-mehis@mehis-IdeaPad-5-Pro-14ACN6:~/Programming/DevOpscourse$ docker container ls
-CONTAINER ID   IMAGE                   COMMAND                  CREATED          STATUS          PORTS                                         NAMES
-1af8105f2cf5   devopscourse-service1   "docker-entrypoint.s…"   2 minutes ago    Up 16 seconds   0.0.0.0:8199->8199/tcp, :::8199->8199/tcp     devopscourse-service1-1
-5b1aa8ad0492   devopscourse-service2   "python service2.py"     47 minutes ago   Up 16 seconds   0.0.0.0:32778->8200/tcp, :::32778->8200/tcp   devopscourse-service2-1
-
-Docker network ls:
-
-mehis@mehis-IdeaPad-5-Pro-14ACN6:~/Programming/DevOpscourse$ docker network ls
-NETWORK ID     NAME                   DRIVER    SCOPE
-65ffdbc09998   bridge                 bridge    local
-683a0441e330   devopscourse_default   bridge    local
-904c286caae2   host                   host      local
-5d7e707e195f   none                   null      local
+mehis@mehis-IdeaPad-5-Pro-14ACN6:~/Programming/DevOpscourse/4th$ docker network ls
+NETWORK ID     NAME                DRIVER    SCOPE
+75e26ca564c7   4th_loadbalancing   bridge    local
+234692bcbaf0   bridge              bridge    local
+904c286caae2   host                host      local
+5d7e707e195f   none                null      local

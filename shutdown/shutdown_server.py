@@ -2,6 +2,7 @@ import docker
 from flask import Flask, request
 import os
 import threading
+import logging
 
 app = Flask(__name__)
 
@@ -9,6 +10,7 @@ app = Flask(__name__)
 #my initial idea was to try to use docker compose down as a script, but i could not make it work
 @app.route('/shutdown', methods=['POST'])
 def shutdown():
+    logging.info('Shutdown service called')
     client = docker.from_env()
     containers = client.containers.list()
     for container in containers:
