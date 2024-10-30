@@ -6,6 +6,6 @@ COPY index.html /usr/share/nginx/html/index.html
 COPY 401.html /usr/share/nginx/html/401.html
 
 
-EXPOSE 8198
+EXPOSE 8081
 
 CMD ["nginx", "-g", "daemon off;"]

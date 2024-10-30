@@ -1,6 +1,6 @@
 mehis@mehis-IdeaPad-5-Pro-14ACN6:~/Programming/DevOpscourse/4th$ docker container ls
 CONTAINER ID   IMAGE          COMMAND                  CREATED          STATUS              PORTS                                               NAMES
-132ba7997179   4th-nginx      "/docker-entrypoint.…"   11 minutes ago   Up About a minute   80/tcp, 0.0.0.0:8198->8198/tcp, :::8198->8198/tcp   4th-nginx-1
+132ba7997179   4th-nginx      "/docker-entrypoint.…"   11 minutes ago   Up About a minute   80/tcp, 0.0.0.0:8081->8081/tcp, :::8081->8081/tcp   4th-nginx-1
 6e3d95634fa0   4th-service1   "docker-entrypoint.s…"   11 minutes ago   Up About a minute   8199/tcp                                            4th-service1-3
 300bb8e878ab   4th-service1   "docker-entrypoint.s…"   11 minutes ago   Up About a minute   8199/tcp                                            4th-service1-2
 cc6c35c4bfcf   4th-service1   "docker-entrypoint.s…"   11 minutes ago   Up About a minute   8199/tcp                                            4th-service1-1

@@ -1,4 +1,3 @@
-
 services:
   service1:
     build:
@@ -25,7 +24,7 @@ services:
   nginx:
     build: ./nginx
     ports:
-      - "8198:8198"
+      - "8198:8081"
     networks:
       - loadbalancing
     depends_on:
@@ -34,7 +33,7 @@ services:
 
   shutdown:
     build:
-      context: .  
+      context: .
       dockerfile: shutdown/Dockerfile.shutdown
     environment:
       - PORT=5000
