@@ -80,5 +80,5 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(8199, () => {
-    console.log('Server running at http://localhost:8199/ (This one is accessible!)');
+    console.log('Server running at http://localhost:8199/');
 });
