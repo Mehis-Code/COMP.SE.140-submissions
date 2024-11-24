@@ -5,13 +5,16 @@ stages:
 
 build:
   stage: build
+  image: alpine:latest
   script:
+    - apk add --no-cache docker-compose
     - docker-compose build --no-cache
   tags:
     - docker
 
 test:
   stage: test
+  image: alpine:latest
   script:
     - echo "Starting tests"
   tags:
@@ -19,7 +22,9 @@ test:
 
 deploy:
   stage: deploy
+  image: alpine:latest
   script:
+    - apk add --no-cache docker-compose
     - docker-compose up -d
   tags:
     - docker
