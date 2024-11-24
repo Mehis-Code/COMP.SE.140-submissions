@@ -12,7 +12,7 @@ build:
     - apk add --no-cache docker-compose
     - docker-compose build --no-cache
   tags:
-    - runner
+    - docker4
 
 test:
   stage: test
@@ -20,7 +20,7 @@ test:
   script:
     - echo "Starting tests"
   tags:
-    - runner
+    - docker4
 
 deploy:
   stage: deploy
@@ -29,4 +29,4 @@ deploy:
     - apk add --no-cache docker-compose
     - docker-compose up -d
   tags:
-    - runner
+    - docker4
