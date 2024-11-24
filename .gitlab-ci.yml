@@ -1,0 +1,19 @@
+stages:
+  - build
+  - test
+  - deploy
+
+build:
+  stage: build
+  script:
+    - docker-compose build --no-cache
+
+test:
+  stage: test
+  script:
+    - echo "Starting tests"
+
+deploy:
+  stage: deploy
+  script:
+    - docker-compose up -d
