@@ -9,6 +9,7 @@ build:
   stage: build
   image: alpine:latest
   script:
+    - apk add docker-compose
     - docker-compose up build
   tags:
     - docker5
