@@ -3,15 +3,9 @@ stages:
   - test
   - deploy
 
-variables:
-  DOCKER_DRIVER: overlay2
-
-services:
-  - docker:20.10.16-dind
-
 build:
   stage: build
-  image: docker:20.10.16
+  image: alpine:latest
   script:
     - apk add --no-cache docker-compose
     - docker-compose build --no-cache
@@ -20,7 +14,7 @@ build:
 
 test:
   stage: test
-  image: docker:20.10.16
+  image: alpine:latest
   script:
     - echo "Starting tests"
   tags:
@@ -28,7 +22,7 @@ test:
 
 deploy:
   stage: deploy
-  image: docker:20.10.16
+  image: alpine:latest
   script:
     - apk add --no-cache docker-compose
     - docker-compose up -d
