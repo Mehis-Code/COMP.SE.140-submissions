@@ -1,7 +1,3 @@
-variables:
-  DOCKER_DRIVER: overlay2
-  DOCKER_TLS_CERTDIR: ""
-  DOCKER_HOST: tcp://docker:2375
 
 services:
   - name: docker:20.10.16-dind
@@ -10,6 +6,7 @@ services:
 test:
   image: docker:latest
   services:
-    - docker:dind # this starts another container in the pod which results in the docker daemon "proxy" exposed in the pod's network namespace on 2375
+    - docker:dind
   script:
+    - unset DOCKER_HOST
     - docker ps
