@@ -1,3 +1,9 @@
+variables:
+  DOCKER_HOST: localhost:2375 # this tells the docker cli client where to look for the daemon
+
 test:
-  script: docker build .
-  
+  image: docker:latest
+  services:
+    - docker:dind # this starts another container in the pod which results in the docker daemon "proxy" exposed in the pod's network namespace on 2375
+  script:
+    - docker ps
