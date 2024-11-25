@@ -9,7 +9,7 @@ variables:
   DOCKER_HOST: tcp://docker:2375
 
 services:
-  - name: docker:20.10.16-dind
+  - name: docker:dind
     command: ["--privileged"]
 
 before_script:
@@ -17,7 +17,7 @@ before_script:
 
 build:
   stage: build
-  image: docker:20.10.16
+  image: docker:latest
   script:
     - docker-compose build --no-cache
   tags:
@@ -25,7 +25,7 @@ build:
 
 test:
   stage: test
-  image: docker:20.10.16
+  image: docker:latest
   script:
     - echo "Starting tests"
   tags:
@@ -33,7 +33,7 @@ test:
 
 deploy:
   stage: deploy
-  image: docker:20.10.16
+  image: docker:latest
   script:
     - docker-compose up -d
   tags:
