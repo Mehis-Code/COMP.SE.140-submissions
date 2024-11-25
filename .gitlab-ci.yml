@@ -1,12 +1,11 @@
 
-services:
-  - name: docker:20.10.16-dind
-    command: ["--privileged"]
+
 
 test:
   image: docker:latest
   services:
-    - docker:dind
+  - name: docker:dind
+    command: ["--privileged"]
   script:
     - unset DOCKER_HOST
     - docker ps
