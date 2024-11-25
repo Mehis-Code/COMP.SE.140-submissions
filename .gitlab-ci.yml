@@ -10,5 +10,4 @@ variables:
 
 job:
   script:
-  - docker ps
-  
+    - docker ps
