@@ -1,5 +1,11 @@
 variables:
-  DOCKER_HOST: localhost:2375 # this tells the docker cli client where to look for the daemon
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: ""
+  DOCKER_HOST: tcp://docker:2375
+
+services:
+  - name: docker:20.10.16-dind
+    command: ["--privileged"]
 
 test:
   image: docker:latest
