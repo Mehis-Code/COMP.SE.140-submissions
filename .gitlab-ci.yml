@@ -9,8 +9,8 @@ build:
   stage: build
   image: alpine:latest
   script:
-    - apk add docker-compose
-    - docker-compose build
+    - apk add --no-cache docker-compose
+    - docker-compose build --no-cache
   tags:
     - docker5
 
