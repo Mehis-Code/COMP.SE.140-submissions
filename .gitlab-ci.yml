@@ -14,13 +14,14 @@ variables:
   DOCKER_HOST: tcp://docker:2375
   DOCKER_TLS_CERTDIR: ""
   DOCKER_DRIVER: overlay2
+  PROJECT_NAME-IMAGE: devops
 
 build:
   stage: build
   before_script:
     - mkdir .docker
   script:
-    - docker-compose build devops
+    - docker-compose build
     - docker save -o .docker/devops.tar devops
   artifacts:
     paths:
