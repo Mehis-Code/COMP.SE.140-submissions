@@ -15,7 +15,7 @@ variables:
 
 build:
   stage: build
-  before:
+  before_script:
     - mkdir -p "$TAR_FILE_FOLDER"
   script:
     - docker build -t $BUILD_DOCKER_IMAGE":"$BUILD_DOCKER_IMAGE_VERSION" .
