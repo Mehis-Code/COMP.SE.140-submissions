@@ -21,7 +21,10 @@ build:
   script:
     - docker-compose build
     - docker image ls
-    - docker save -o .docker/devops.tar devops
+    - docker save -o .docker/devops-nginx.tar devops-nginx:latest
+    - docker save -o .docker/devops-service1.tar devops-service1:latest
+    - docker save -o .docker/devops-service2.tar devops-service2:latest
+    - docker save -o .docker/devops-shutdown.tar devops-shutdown:latest
   artifacts:
     paths:
       - .docker/
@@ -29,7 +32,10 @@ build:
 test:
   stage: test
   before_script:
-    - docker load -q -i .docker/devops.tar
+    - docker load -q -i .docker/devops-nginx.tar
+    - docker load -q -i .docker/devops-service1.tar
+    - docker load -q -i .docker/devops-service2.tar
+    - docker load -q -i .docker/devops-shutdown.tar
   script:
     - echo "Test phase initiated"
     - apk add --no-cache python3 py3-pip
