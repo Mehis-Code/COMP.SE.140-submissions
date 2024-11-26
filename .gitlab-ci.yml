@@ -27,7 +27,11 @@ build:
     - docker save -o .docker/devops-shutdown.tar devops-shutdown:latest
   artifacts:
     paths:
-      - .docker/
+      - .docker/devops-nginx.tar
+      - .docker/devops-service1.tar
+      - .docker/devops-service2.tar
+      - .docker/devops-shutdown.tar
+    expire_in: 15 mins
 
 test:
   stage: test
