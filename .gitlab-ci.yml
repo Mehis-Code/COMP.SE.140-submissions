@@ -17,9 +17,10 @@ build:
   stage: build
   script:
     - docker ps
-    - docker-compose build -t app
+    - docker-compose build
+    - docker tag $(docker-compose images -q app) $IMAGE_NAME
     - mkdir image
-    - docker save app > image/app.tar
+    - docker save $IMAGE_NAME > image/app.tar
     - echo "Asd!"
   artifacts:
     paths:
@@ -30,7 +31,7 @@ test:
   script:
     - echo "Test phase initiated"
     - docker load -i image/app.tar
-    - docker run --name app -d app
+    - docker run --name app -d $IMAGE_NAME
     - docker exec app python tests.py
 
 deploy:
