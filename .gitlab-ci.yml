@@ -15,10 +15,14 @@ variables:
 
 build:
   stage: build
+  before:
+    - mkdir -p "$TAR_FILE_FOLDER"
   script:
-    - docker ps
-    - docker-compose build
-    - echo "Asd!"
+    - docker build -t $BUILD_DOCKER_IMAGE":"$BUILD_DOCKER_IMAGE_VERSION" .
+    - docker save -o "$TAR_FILE_FOLDER""$TAR_FILE_PATH""$TAR_FILE_NAME" "$BUILD_DOCKER_IMAGE":"$BUILD_DOCKER_IMAGE_VERSION"
+  artifacts:
+    paths:
+      - "$TAR_FILE_FOLDER"
 
 test:
   stage: test
