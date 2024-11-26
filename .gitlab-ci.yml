@@ -18,21 +18,15 @@ build:
   script:
     - docker ps
     - docker-compose build
-    - docker tag $(docker images -q app) $IMAGE_NAME
-    - mkdir image
-    - docker save $IMAGE_NAME > image/app.tar
     - echo "Asd!"
-  artifacts:
-    paths:
-      - image
 
 test:
+  image: python:latest
   stage: test
   script:
     - echo "Test phase initiated"
-    - docker load -i image/app.tar
-    - docker run --name app -d $IMAGE_NAME
-    - docker exec app python tests.py
+    - docker-compose build
+    - python tests.py
 
 deploy:
   stage: deploy
