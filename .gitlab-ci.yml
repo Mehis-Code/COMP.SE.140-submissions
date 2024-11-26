@@ -16,16 +16,18 @@ variables:
 build:
   stage: build
   before_script:
-    - mkdir -p "$TAR_FILE_FOLDER"
+    - mkdir -p .docker
   script:
-    - docker build -t $BUILD_DOCKER_IMAGE":"$BUILD_DOCKER_IMAGE_VERSION" .
-    - docker save -o "$TAR_FILE_FOLDER""$TAR_FILE_PATH""$TAR_FILE_NAME" "$BUILD_DOCKER_IMAGE":"$BUILD_DOCKER_IMAGE_VERSION"
+    - docker build -t devopsBuild .
+    - docker save -o .docker/devopsBuild.tar devopsBuild
   artifacts:
     paths:
-      - "$TAR_FILE_FOLDER"
+      - .docker/
 
 test:
   stage: test
+  before_script:
+    - docker load -q -i .docker/devopsBuild.tar
   script:
     - echo "Test phase initiated"
     - apk add --no-cache python3 py3-pip
