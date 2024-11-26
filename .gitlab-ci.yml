@@ -12,3 +12,4 @@ job:
   script:
     - docker ps
     - docker-compose build
+    - echo "Asd!"
