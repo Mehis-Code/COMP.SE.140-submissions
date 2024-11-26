@@ -18,7 +18,7 @@ build:
   before_script:
     - mkdir .docker
   script:
-    - docker-compose build -t devops .
+    - docker-compose build --project-name devops
     - docker save -o .docker/devops.tar devops
   artifacts:
     paths:
