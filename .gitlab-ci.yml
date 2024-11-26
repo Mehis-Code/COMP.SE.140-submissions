@@ -16,7 +16,7 @@ variables:
 build:
   stage: build
   before_script:
-    - mkdir -p .docker
+    - mkdir .docker
   script:
     - docker build -t devops .
     - docker save -o .docker/devops.tar devops
