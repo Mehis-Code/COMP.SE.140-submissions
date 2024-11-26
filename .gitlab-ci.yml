@@ -18,7 +18,7 @@ build:
   script:
     - docker ps
     - docker-compose build
-    - docker tag $(docker-compose images -q app) $IMAGE_NAME
+    - docker tag $(docker images -q app) $IMAGE_NAME
     - mkdir image
     - docker save $IMAGE_NAME > image/app.tar
     - echo "Asd!"
