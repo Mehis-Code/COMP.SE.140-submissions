@@ -21,12 +21,15 @@ build:
     - echo "Asd!"
 
 test:
-  image: python:latest
   stage: test
   script:
     - echo "Test phase initiated"
+    - apk add --no-cache python3 py3-pip
+    - python3 -m venv venv
+    - . venv/bin/activate
+    - pip install requests pytest
     - docker-compose build
-    - python tests.py
+    - pytest tests.py
 
 deploy:
   stage: deploy
