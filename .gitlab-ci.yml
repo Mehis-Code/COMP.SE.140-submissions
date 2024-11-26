@@ -1,5 +1,10 @@
 image: docker
 
+stages:
+  - build
+  - test
+  - deploy
+
 services:
   - docker:dind
 
@@ -8,8 +13,19 @@ variables:
   DOCKER_TLS_CERTDIR: ""
   DOCKER_DRIVER: overlay2
 
-job:
+build:
+  stage: build
   script:
     - docker ps
     - docker-compose build
     - echo "Asd!"
+
+test:
+  stage: test
+  script:
+    - echo "Test phase mock"
+
+deploy:
+  stage: deploy
+  script:
+    - echo "Deploy phase mock"
