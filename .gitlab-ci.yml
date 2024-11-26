@@ -18,8 +18,8 @@ build:
   before_script:
     - mkdir -p .docker
   script:
-    - docker build -t devopsBuild .
-    - docker save -o .docker/devopsBuild.tar devopsBuild
+    - docker build -t devops .
+    - docker save -o .docker/devops.tar devops
   artifacts:
     paths:
       - .docker/
@@ -27,7 +27,7 @@ build:
 test:
   stage: test
   before_script:
-    - docker load -q -i .docker/devopsBuild.tar
+    - docker load -q -i .docker/devops.tar
   script:
     - echo "Test phase initiated"
     - apk add --no-cache python3 py3-pip
