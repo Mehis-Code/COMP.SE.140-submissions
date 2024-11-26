@@ -18,7 +18,7 @@ build:
   before_script:
     - mkdir .docker
   script:
-    - docker build -t devops -f Dockerfile .
+    - docker build  .
     - docker save -o .docker/devops.tar devops
   artifacts:
     paths:
