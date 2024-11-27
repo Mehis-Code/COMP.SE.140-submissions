@@ -17,12 +17,9 @@ variables:
 build:
   stage: build
   script:
-    - docker-compose build
+    - docker-compose up --build
     - docker image ls
     - docker ps
-    cache:
-      paths:
-        - .docker
 
 test:
   stage: test
