@@ -43,7 +43,7 @@ test:
     - python3 -m venv venv
     - . venv/bin/activate
     - pip install requests pytest
-    - curl -u user1:devops http://localhost:8198/
+    - curl -u user1:devops http://docker:8198/
     - pytest -q --tb=short tests.py
     - deactivate
     - echo "TESTS SUCCESSFUL"
