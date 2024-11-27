@@ -32,11 +32,14 @@ test:
   before_script:
     - echo "Dependencies for python testing"
     - apk add --no-cache python3 py3-pip
-    - pip install requests pytest
+
   script:
     - echo "Test phase initiated"
     - docker-compose up --build -d
     - docker ps
+    - python3 -m venv venv
+    - . venv/bin/activate
+    - pip install requests pytest
     - pytest tests.py
 
 deploy:
