@@ -13,7 +13,7 @@ variables:
   DOCKER_TLS_CERTDIR: ""
   DOCKER_DRIVER: overlay2
 
-#Verifying that a build is succesful
+#Verifying that a build is successful
 build:
   stage: build
   script:
@@ -21,13 +21,19 @@ build:
     - docker image ls
     - docker ps
 
-#Running tests on a built
+#Running tests on a built project
+#I could not get the build passed on as artifacts due to limited size.
+#Learned that Gitlab admins could increase the size, but I don't have access to that.
+#There might be a smarter way related to mounting volumes, but I couldn't do it.
+#I decided to continue with knowing my limitations. The result is a slowed down operation,
+#and the build stage might be redundant.
 test:
   stage: test
   script:
     - echo "Test phase initiated"
     - docker-compose up --build -d
     - docker ps
+    - curl http://localhost:8198
 
 deploy:
   stage: deploy
