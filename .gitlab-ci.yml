@@ -17,9 +17,11 @@ variables:
 build:
   stage: build
   script:
+    - echo "BUILD PHASE INITIATED"
     - docker-compose build
     - docker image ls
     - docker ps
+    - echo "BUILD SUCCESSFUL"
 
 #Running tests on a built project
 #I could not get the build passed on as artifacts due to limited size.
@@ -34,13 +36,15 @@ test:
     - apk add --no-cache python3 py3-pip
 
   script:
-    - echo "Test phase initiated"
+    - echo "TEST PHASE INITIATED"
     - docker-compose up --build -d
     - docker ps
+    - echo "INITIATING TESTS IN PYTHON VENV"
     - python3 -m venv venv
     - . venv/bin/activate
     - pip install requests pytest
-    - pytest tests.py
+    - pytest -q --tb=short tests.py
+    - echo "TESTS SUCCESSFUL"
 
 deploy:
   stage: deploy
