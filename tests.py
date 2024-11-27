@@ -24,7 +24,7 @@ def test_get_run_log():
     assert "RUNNING" in response.text, "Failed to get run log"
 
 def test_nginx_service():
-    response = requests.get(f"http://localhost:8198, auth=('user1', 'devops')")
+    response = requests.get("http://localhost:8198", auth=('user1', 'devops'))
     assert response.status_code == 200
     assert response.text == "Nginx service is running", "Failed to get nginx service"
 
