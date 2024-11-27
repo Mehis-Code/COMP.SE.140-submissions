@@ -23,6 +23,11 @@ def test_get_run_log():
     assert response.status_code == 200
     assert "RUNNING" in response.text, "Failed to get run log"
 
+def test_nginx_service()
+    response = requests.get(f"http://localhost:8198")
+    assert response.status_code == 200
+    assert response.text == "Nginx service is running", "Failed to get nginx service"
+
 if __name__ == "__main__":
     print("Running tests")
     test_set_state()
