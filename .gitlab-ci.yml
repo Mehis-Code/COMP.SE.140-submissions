@@ -13,6 +13,7 @@ variables:
   DOCKER_TLS_CERTDIR: ""
   DOCKER_DRIVER: overlay2
 
+#Verifying that a build is succesful
 build:
   stage: build
   script:
@@ -20,10 +21,12 @@ build:
     - docker image ls
     - docker ps
 
+#Running tests on a built
 test:
   stage: test
   script:
     - echo "Test phase initiated"
+    - docker-compose up --build -d
     - docker ps
 
 deploy:
