@@ -7,4 +7,4 @@ COPY . .
 
 EXPOSE 8197
 
-CMD ["python", "service2.py"]
+CMD ["python", "api_gateway.py"]
