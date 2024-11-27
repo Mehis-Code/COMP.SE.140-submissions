@@ -16,16 +16,38 @@ variables:
 
 build:
   stage: build
+  before_script:
+    - mkdir .docker
   script:
-    - docker-compose up --build
+    - docker-compose build
     - docker image ls
-    - docker ps
+    - docker save -o .docker/devops-nginx.tar devops-nginx:latest
+    - docker save -o .docker/devops-service1.tar devops-service1:latest
+    - docker save -o .docker/devops-service2.tar devops-service2:latest
+    - docker save -o .docker/devops-shutdown.tar devops-shutdown:latest
+  artifacts:
+    paths:
+      - .docker/devops-nginx.tar
+      - .docker/devops-service1.tar
+      - .docker/devops-service2.tar
+      - .docker/devops-shutdown.tar
+    expire_in: 15 mins
 
 test:
   stage: test
+  before_script:
+    - docker load -q -i .docker/devops-nginx.tar
+    - docker load -q -i .docker/devops-service1.tar
+    - docker load -q -i .docker/devops-service2.tar
+    - docker load -q -i .docker/devops-shutdown.tar
   script:
     - echo "Test phase initiated"
-    - docker ps
+    - apk add --no-cache python3 py3-pip
+    - python3 -m venv venv
+    - . venv/bin/activate
+    - pip install requests pytest
+    - docker-compose build
+    - pytest tests.py
 
 deploy:
   stage: deploy
