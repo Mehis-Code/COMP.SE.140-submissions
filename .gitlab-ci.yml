@@ -29,11 +29,15 @@ build:
 #and the build stage might be redundant.
 test:
   stage: test
+  before_script:
+    - echo "Dependencies for python testing"
+    - apk add --no-cache python3 py3-pip
+    - pip install requests pytest
   script:
     - echo "Test phase initiated"
     - docker-compose up --build -d
     - docker ps
-    - curl http://localhost:8198
+    - pytest tests.py
 
 deploy:
   stage: deploy
