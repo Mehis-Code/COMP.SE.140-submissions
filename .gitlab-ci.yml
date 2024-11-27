@@ -43,7 +43,7 @@ test:
     - python3 -m venv venv
     - . venv/bin/activate
     - pip install requests pytest
-    - pytest -q --tb=short tests.py
+    - pytest -q --tb=short tests/tests_for_pipeline.py
     - deactivate
     - echo "TESTS SUCCESSFUL"
 
