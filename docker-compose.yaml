@@ -45,8 +45,8 @@ services:
 
   api_gateway:
     build: 
-      context: ./state_api
-      dockerfile: Dockerfile.api_gateway
+      context: .
+      dockerfile: state_api/Dockerfile.api_gateway
     ports:
       - "8197:8197"
     volumes:
