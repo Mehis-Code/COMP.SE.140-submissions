@@ -15,11 +15,12 @@ def test_handle_request():
     assert response.status_code == 200, "Failed to handle request"
 
 def test_get_run_log():
-    response = requests.get(f"{BASE_URL}/log")
+    response = requests.get(f"{BASE_URL}/run-log")
     assert response.status_code == 200, "Failed to access log"
 
 def test_nginx_service():
     response = requests.get("http://docker:8198")
+    res2 = requests.get("http://localhost:8198/")
     assert response.status_code == 200, "Failed to access the service"
 
 if __name__ == "__main__":
