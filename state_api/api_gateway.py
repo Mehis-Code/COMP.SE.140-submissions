@@ -1,7 +1,7 @@
 from flask import Flask
 import datetime
 import docker
-import request
+import requests
 from docker.models.containers import Container
 
 app = Flask(__name__)
@@ -31,7 +31,7 @@ def set_state():
         case "PAUSED":
             container.pause();
         case "SHUTDOWN":
-            request.post("http://docker:8198/shutdown/")
+            requests.post("http://docker:8198/shutdown/")
         case "INIT":
             container.start();
         case "RUNNING":
