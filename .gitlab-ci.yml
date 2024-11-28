@@ -33,7 +33,7 @@ test:
   stage: test
   before_script:
     - echo "Dependencies for python testing"
-    - apk add --no-cache python3 py3-pip curl
+    - apk add --no-cache python3 py3-pip
 
   script:
     - echo "TEST PHASE INITIATED"
