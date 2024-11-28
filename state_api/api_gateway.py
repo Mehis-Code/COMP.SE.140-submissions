@@ -1,13 +1,15 @@
 from flask import Flask
 import datetime
 import docker
-import requests
+import request
 from docker.models.containers import Container
 
 app = Flask(__name__)
 
+creation_time = f"State initialized at {datetime.datetime.now()}"
 state = "INIT"
-log = ["INIT"]
+log = [creation_time]
+
 #dummy responses to test pipeline
 @app.route('/state', methods=['GET'])
 def get_state():
@@ -15,14 +17,28 @@ def get_state():
 
 @app.route('/state', methods=['PUT'])
 def set_state():
-    #Testing pausing
+
+    prevState = state
+    #Valid states
+    if state in ["PAUSED", "SHUTDOWN", "INIT", "RUNNING"]:
+        state = request.data.decode('utf-8')
+    else:
+        return "Invalid state", 400
+    
     client: docker.DockerClient = docker.from_env()
     container: Container = client.containers.get('devops-nginx-1')
-    state = "PAUSED";
-    prevState = log[-1]
+    match state:
+        case "PAUSED":
+            container.pause();
+        case "SHUTDOWN":
+            request.post("http://docker:8198/shutdown/")
+        case "INIT":
+            container.start();
+        case "RUNNING":
+            container.start();
     log.append(f"State changed to {state} from {prevState} at {datetime.datetime.now()}")
     container.pause();
-    #requests.post("http://docker:8198/shutdown/")
+
     return state, 200
 
 @app.route('/request', methods=['GET'])
