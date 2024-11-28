@@ -25,13 +25,11 @@ services:
     build: ./nginx
     ports:
       - "8198:8081"
-      - "8197:8197"
     networks:
       - loadbalancing
     depends_on:
       - service1
       - service2
-      - api_gateway
 
   shutdown:
     build:
