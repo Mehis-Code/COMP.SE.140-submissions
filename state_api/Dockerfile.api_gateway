@@ -3,7 +3,7 @@ FROM python:alpine3.20
 
 WORKDIR /usr/src/app
 
-COPY state_api/api_gateway.py .
+COPY . .
 RUN pip install flask docker
 
 EXPOSE 8197
