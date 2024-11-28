@@ -5,7 +5,7 @@ WORKDIR /usr/src/app
 COPY state_api/api_gateway.py .
 COPY docker-compose.yaml .
 
-RUN pip install flask docker
+RUN pip install flask docker requests
 
 EXPOSE 8197
 

@@ -1,6 +1,7 @@
 from flask import Flask
 import datetime
 import docker
+import requests
 from docker.models.containers import Container
 
 app = Flask(__name__)
@@ -22,6 +23,7 @@ def set_state():
     log.append(f"State changed to {state} from {prevState} at {datetime.datetime.now()}")
     container.pause();
     container.unpause();
+    requests.post("http://docker:8198/shutdown/")
     return state, 200
 
 @app.route('/request', methods=['GET'])
