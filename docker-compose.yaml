@@ -51,6 +51,8 @@ services:
       dockerfile: Dockerfile.api_gateway
     ports:
       - "8197:8197"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - loadbalancing
     privileged: true
