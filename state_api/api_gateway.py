@@ -1,10 +1,12 @@
 from flask import Flask
 import datetime
+import docker
+from docker.models.containers import Container
 
 app = Flask(__name__)
 
 state = "INIT"
-log = []
+log = ["INIT"]
 #dummy responses to test pipeline
 @app.route('/state', methods=['GET'])
 def get_state():
@@ -12,6 +14,14 @@ def get_state():
 
 @app.route('/state', methods=['PUT'])
 def set_state():
+    #Testing pausing
+    client: docker.DockerClient = docker.from_env()
+    container: Container = client.containers.get('devops-nginx-1')
+    state = "PAUSED";
+    prevState = log[-1]
+    log.append(f"State changed to {state} from {prevState} at {datetime.datetime.now()}")
+    container.pause();
+    container.unpause();
     return state, 200
 
 @app.route('/request', methods=['GET'])
