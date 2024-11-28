@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 state = "INIT"
 log = []
-/#dummy responses to test pipeline
+#dummy responses to test pipeline
 @app.route('/state', methods=['GET'])
 def get_state():
     return state, 200

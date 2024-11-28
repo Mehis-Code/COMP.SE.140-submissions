@@ -30,6 +30,7 @@ services:
     depends_on:
       - service1
       - service2
+      - api_gateway
 
   shutdown:
     build:

@@ -2,7 +2,7 @@ import requests
 
 #API url
 #Automated tests for the pipeline
-BASE_URL = "http://localhost:8197"
+BASE_URL = "http://docker:8197"
 def test_set_state():
     response = requests.put(f"{BASE_URL}/state", data="RUNNING", headers={"Content-Type": "text/plain"})
     assert response.status_code == 200, "Failed to set state"
