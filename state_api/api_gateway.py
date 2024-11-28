@@ -3,12 +3,18 @@ import datetime
 import docker
 import requests
 from docker.models.containers import Container
+import logging
 
 app = Flask(__name__)
 
 creation_time = f"State initialized at {datetime.datetime.now()}"
 state = "INIT"
 log = [creation_time]
+
+
+# Configure logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
 
 #dummy responses to test pipeline
 @app.route('/state', methods=['GET'])
@@ -18,25 +24,44 @@ def get_state():
 @app.route('/state', methods=['PUT'])
 def set_state():
     global state
-    global log
+        
+    client = docker.from_env()
+    containers = client.containers.list()
+    nginxContainer = ""
+    for container in containers:
+        if 'nginx'  in container.name:
+            nginxContainer = container
+    if not nginxContainer:
+        logging.error("Nginx container not found")
+        return "Nginx container not found", 500
+    
+    logging.info(f"nginx container: {nginxContainer}")
+
     prevState = state
+    state = request.data.decode("utf-8")
+    if prevState == state:
+        return state, 200
+    logging.info(f"State:{state}")
+    global log
+
     #Valid states
+    
     if state in ["PAUSED", "SHUTDOWN", "INIT", "RUNNING"]:
-        state = request.data.decode('utf-8')
+        print("Valid state")
     else:
         return "Invalid state", 400
     
     client: docker.DockerClient = docker.from_env()
-    container: Container = client.containers.get('devops-nginx-1')
+    
     match state:
         case "PAUSED":
-            container.pause();
+            nginxContainer.pause();
         case "SHUTDOWN":
-            requests.post("http://docker:8198/shutdown/")
+            requests.post("http://localhost:8198/shutdown/")
         case "INIT":
-            container.start();
+            nginxContainer.restart();
         case "RUNNING":
-            container.start();
+            nginxContainer.unpause();
     log.append(f"State changed to {state} from {prevState} at {datetime.datetime.now()}")
     container.pause();
 
@@ -44,12 +69,10 @@ def set_state():
 
 @app.route('/request', methods=['GET'])
 def handle_request():
-    global state
     return state, 200
 
 @app.route('/run-log', methods=['GET'])
 def get_run_log():
-    global log
     return str(log), 200
 
 
