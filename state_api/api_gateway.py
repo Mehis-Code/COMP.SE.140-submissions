@@ -17,7 +17,8 @@ def get_state():
 
 @app.route('/state', methods=['PUT'])
 def set_state():
-
+    global state
+    global log
     prevState = state
     #Valid states
     if state in ["PAUSED", "SHUTDOWN", "INIT", "RUNNING"]:
@@ -43,10 +44,12 @@ def set_state():
 
 @app.route('/request', methods=['GET'])
 def handle_request():
+    global state
     return state, 200
 
 @app.route('/run-log', methods=['GET'])
 def get_run_log():
+    global log
     return str(log), 200
 
 
