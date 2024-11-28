@@ -22,7 +22,6 @@ def set_state():
     prevState = log[-1]
     log.append(f"State changed to {state} from {prevState} at {datetime.datetime.now()}")
     container.pause();
-    container.unpause();
     #requests.post("http://docker:8198/shutdown/")
     return state, 200
 

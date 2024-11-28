@@ -33,7 +33,7 @@ test:
   stage: test
   before_script:
     - echo "Dependencies for python testing"
-    - apk add --no-cache python3 py3-pip
+    - apk add --no-cache python3 py3-pip curl
 
   script:
     - echo "TEST PHASE INITIATED"
@@ -44,6 +44,7 @@ test:
     - . venv/bin/activate
     - pip install requests pytest
     - pytest -q --tb=short tests/tests_for_pipeline.py
+    - curl http://localhost:8198
     - deactivate
     - echo "TESTS SUCCESSFUL"
 
