@@ -2,7 +2,6 @@ from flask import Flask, request
 import datetime
 import docker
 import requests
-from docker.models.containers import Container
 import logging
 
 app = Flask(__name__)
@@ -15,6 +14,7 @@ log = [creation_time]
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
+# Load the .htpasswd file
 
 #dummy responses to test pipeline
 @app.route('/state', methods=['GET'])
@@ -25,6 +25,7 @@ def get_state():
 def set_state():
     global trueState
         
+    
     client = docker.from_env()
     containers = client.containers.list()
     nginxContainer = ""
@@ -62,9 +63,9 @@ def set_state():
                 logging.info("Sending POST request to /shutdown")
                 response = requests.post("http://shutdown:5000/shutdown")
                 response.raise_for_status()
-                logging.info(f"POST request to /shutdown successful: {response.status_code}")
+                return "System shutdown in progress", 200
             except requests.exceptions.RequestException as e:
-                logging.error(f"Failed to shutdown nginx: {e}")
+                logging.error(f"Failed to shutdown the system {e}")
         case "INIT":
                 nginxContainer.restart();
         case "RUNNING":
@@ -73,8 +74,6 @@ def set_state():
     trueState = state
     log.append(f"State changed to {trueState} from {prevState} at {datetime.datetime.now()}")
     logging.info(f"State changed to {trueState} from {prevState}")
-    if trueState == "SHUTDOWN":
-        logging.info("System shutdown initiated")
     return trueState, 200
 
 @app.route('/request', methods=['GET'])
