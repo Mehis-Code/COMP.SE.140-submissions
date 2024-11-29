@@ -1,0 +1,1 @@
+curl -X PUT -d "PAUSED" localhost:8197/state -H "Content-Type: text/plain"

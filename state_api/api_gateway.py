@@ -14,35 +14,40 @@ log = [creation_time]
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-# Load the .htpasswd file
 
 #dummy responses to test pipeline
-@app.route('/state', methods=['GET'])
+@app.route('/stateGet', methods=['GET'])
 def get_state():
     return trueState, 200
 
 @app.route('/state', methods=['PUT'])
 def set_state():
-    global trueState
-        
+    global trueState    
+    service2Container = ""
+    nginxContainer = ""
     
     client = docker.from_env()
     containers = client.containers.list()
-    nginxContainer = ""
+
     for container in containers:
-        if 'service2'  in container.name:
+        if 'service2' in container.name:
+            service2Container = container
+        if 'nginx' in container.name:
             nginxContainer = container
+
+    if not service2Container:
+        logging.error("Service2 container not found")
+        return "Service2 container not found", 500
     if not nginxContainer:
         logging.error("Nginx container not found")
-        return "Nginx container not found", 500
+        return "Nginx Container not found", 500
     
-    logging.info(f"nginx container: {nginxContainer}")
+    logging.info(f"nginx container: {service2Container}")
 
-    prevState = trueState
     state = request.data.decode("utf-8").strip('"')
     logging.info(f"State: {state} (type: {type(state)})")
-    logging.info(f"Previous state: {prevState} (type: {type(prevState)})")
-    if prevState == state:
+    logging.info(f"Previous state: {trueState} (type: {type(trueState)})")
+    if trueState == state:
         logging.info("State request same as current state")
         return state, 200
 
@@ -57,7 +62,7 @@ def set_state():
     
     match state:
         case "PAUSED":
-                nginxContainer.pause();
+                service2Container.pause();
         case "SHUTDOWN":
             try:
                 logging.info("Sending POST request to /shutdown")
@@ -67,13 +72,15 @@ def set_state():
             except requests.exceptions.RequestException as e:
                 logging.error(f"Failed to shutdown the system {e}")
         case "INIT":
+                service2Container.restart();    
                 nginxContainer.restart();
         case "RUNNING":
-                nginxContainer.unpause();
-    
+                if trueState != "INIT":
+                    service2Container.unpause();
+    log.append(f"State changed to {state} from {trueState} at {datetime.datetime.now()}\n")
+    logging.info(f"State changed to {state} from {trueState}")
     trueState = state
-    log.append(f"State changed to {trueState} from {prevState} at {datetime.datetime.now()}")
-    logging.info(f"State changed to {trueState} from {prevState}")
+
     return trueState, 200
 
 @app.route('/request', methods=['GET'])

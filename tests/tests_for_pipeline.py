@@ -9,7 +9,7 @@ def test_set_state(param):
     assert response.text == param, "Failed to set state"
 
 def test_get_state():
-    response = requests.get(f"{BASE_URL}/state")
+    response = requests.get(f"{BASE_URL}/stateGet")
     assert response.status_code == 200, "Failed to get state"
     assert response.text in ["INIT", "PAUSED", "RUNNING", "SHUTDOWN"], "Test response not in list"
     
