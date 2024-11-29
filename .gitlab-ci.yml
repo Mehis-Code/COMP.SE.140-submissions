@@ -50,5 +50,23 @@ test:
 
 deploy:
   stage: deploy
+before_script:
+    - apt-get update -y && apt-get install -yqqf openssh-client git unzip sshpass rsync --fix-missing
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client git -y )'
+    - eval $(ssh-agent -s)
+    - echo "$PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+
+    - ssh-keyscan $GITLAB_URL >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+
+    - git config --global user.email "lotte.karlsson@email.com"
+    - git config --global user.name "Gitlab Runner"
   script:
-    - echo "Deploy phase mock"
+    - echo "Deploying current file to main branch"
+    - git checkout main
+    - git push second main
+  only:
+    - project
