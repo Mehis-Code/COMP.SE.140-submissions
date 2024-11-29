@@ -44,29 +44,14 @@ test:
     - . venv/bin/activate
     - pip install requests pytest
     - pytest -q --tb=short tests/tests_for_pipeline.py
-    - docker ps
+    - docker-compose down
     - deactivate
     - echo "TESTS SUCCESSFUL"
 
 deploy:
   stage: deploy
-  before_script:
-    - apt-get update -y && apt-get install -yqqf openssh-client git unzip sshpass rsync --fix-missing
-    - "which ssh-agent || ( apt-get update -y && apt-get install openssh-client git -y )"
-    - eval $(ssh-agent -s)
-    - echo "$PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
-
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-
-    - ssh-keyscan $GITLAB_URL >> ~/.ssh/known_hosts
-    - chmod 644 ~/.ssh/known_hosts
-
-    - git config --global user.email "lotte.karlsson@email.com"
-    - git config --global user.name "Gitlab Runner"
   script:
-    - echo "Deploying current file to main branch"
-    - git checkout main
-    - git push second main
-  only:
-    - project
+    - echo "DEPLOY PHASE INITIATED"
+    - docker-compose up --build -d
+    - docker ps
+    - echo "DEPLOY SUCCESSFUL"
