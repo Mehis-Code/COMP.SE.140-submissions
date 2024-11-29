@@ -55,6 +55,9 @@ services:
     networks:
       - loadbalancing
     privileged: true
+    depends_on:
+      - service1
+      - service2
 
 networks:
   loadbalancing:

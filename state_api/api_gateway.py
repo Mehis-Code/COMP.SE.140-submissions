@@ -8,7 +8,7 @@ import logging
 app = Flask(__name__)
 
 creation_time = f"State initialized at {datetime.datetime.now()}"
-state = "INIT"
+trueState = "INIT"
 log = [creation_time]
 
 
@@ -19,17 +19,17 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 #dummy responses to test pipeline
 @app.route('/state', methods=['GET'])
 def get_state():
-    return state, 200
+    return trueState, 200
 
 @app.route('/state', methods=['PUT'])
 def set_state():
-    global state
+    global trueState
         
     client = docker.from_env()
     containers = client.containers.list()
     nginxContainer = ""
     for container in containers:
-        if 'nginx'  in container.name:
+        if 'service2'  in container.name:
             nginxContainer = container
     if not nginxContainer:
         logging.error("Nginx container not found")
@@ -37,39 +37,55 @@ def set_state():
     
     logging.info(f"nginx container: {nginxContainer}")
 
-    prevState = state
-    state = request.data.decode("utf-8")
+    prevState = trueState
+    state = request.data.decode("utf-8").strip('"')
+    logging.info(f"State: {state} (type: {type(state)})")
+    logging.info(f"Previous state: {prevState} (type: {type(prevState)})")
     if prevState == state:
+        logging.info("State request same as current state")
         return state, 200
-    logging.info(f"State:{state}")
+
     global log
 
     #Valid states
-    
-    if state in ["PAUSED", "SHUTDOWN", "INIT", "RUNNING"]:
-        print("Valid state")
-    else:
+    logging.info(state not in ["PAUSED", "SHUTDOWN", "INIT", "RUNNING"])
+    if state not in ["PAUSED", "SHUTDOWN", "INIT", "RUNNING"]:
         return "Invalid state", 400
     
     client: docker.DockerClient = docker.from_env()
     
     match state:
         case "PAUSED":
-            nginxContainer.pause();
+                nginxContainer.pause();
         case "SHUTDOWN":
-            requests.post("http://localhost:8198/shutdown/")
+            try:
+                logging.info("Sending POST request to /shutdown")
+                response = requests.post("http://shutdown:5000/shutdown")
+                response.raise_for_status()
+                logging.info(f"POST request to /shutdown successful: {response.status_code}")
+            except requests.exceptions.RequestException as e:
+                logging.error(f"Failed to shutdown nginx: {e}")
         case "INIT":
-            nginxContainer.restart();
+                nginxContainer.restart();
         case "RUNNING":
-            nginxContainer.unpause();
-    log.append(f"State changed to {state} from {prevState} at {datetime.datetime.now()}")
-    container.pause();
-
-    return state, 200
+                nginxContainer.unpause();
+    
+    trueState = state
+    log.append(f"State changed to {trueState} from {prevState} at {datetime.datetime.now()}")
+    logging.info(f"State changed to {trueState} from {prevState}")
+    if trueState == "SHUTDOWN":
+        logging.info("System shutdown initiated")
+    return trueState, 200
 
 @app.route('/request', methods=['GET'])
 def handle_request():
-    return state, 200
+    try:
+        response = requests.get("http://service2:8200")
+        response.raise_for_status()
+        return response.json(), 200
+    except:
+        return "Error", 500
+       
 
 @app.route('/run-log', methods=['GET'])
 def get_run_log():
