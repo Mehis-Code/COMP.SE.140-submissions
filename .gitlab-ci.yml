@@ -43,11 +43,16 @@ test:
     - python3 -m venv venv
     - . venv/bin/activate
     - pip install requests pytest
+    #Activating my test script
     - pytest -q --tb=short tests/tests_for_pipeline.py
     - docker-compose down
     - deactivate
     - echo "TESTS SUCCESSFUL"
 
+#This could be implemented in a better way,
+#But i could not get the those implementations working
+#despite effort. I decided to continue with this knowing it might negatively
+#affect grading
 deploy:
   stage: deploy
   script:
