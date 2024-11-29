@@ -46,9 +46,6 @@ test:
     - pytest -q --tb=short tests/tests_for_pipeline.py
     - docker ps
     - deactivate
-
-    #tests logs from the containers
-    - docker container logs devops-nginx
     - echo "TESTS SUCCESSFUL"
 
 deploy:
